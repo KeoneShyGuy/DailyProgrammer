@@ -53,14 +53,25 @@ def factor_letters(numerator, denominator):
             numerator = numerator.replace(current_var, "", 1)
             denominator = denominator.replace(current_var, "", 1)
             c = 0
-    print numerator + "/" + denominator
+    if len(numerator) == 0:
+        numerator = "1"
+    if len(denominator) == 0:
+        denominator = "1"
+    return numerator, denominator
 
 
 # modify the FractionList piece by piece
 for item in FractionList:
     for idx, fraction in enumerate(item):
         item[idx] = replace_variables(fraction, VarDict)
-    # print item
+    item[0], item[1] = factor_letters(item[0], item[1])
 
-# print FractionList
-factor_letters("abczy", "yacxzj")
+print "Input"
+
+for line in Bonus:
+    print line.rstrip("\n")
+
+print "\n\nOutput"
+
+for item in FractionList:
+    print item[0] + " " + item[1]

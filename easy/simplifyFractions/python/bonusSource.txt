@@ -1,9 +1,11 @@
-3
+4
 x cb
 y ab
 z xa
+j xzy
 ab cb
 ab x
 x y
 z y
 z xay
+zb j
