@@ -37,6 +37,10 @@ def replace_variables(Equate, dict__):
 	return Equate
 # Fuck. Yes. Now I have to factor out the letters. Gross
 
-TestE = "axcycz"
-print replace_variables(TestE, VarDict)
+# modify the FractionList piece by piece
+for item in FractionList:
+	for idx, fraction in enumerate(item):
+		item[idx] = replace_variables(fraction, VarDict)
+		# print fraction
 
+print FractionList
