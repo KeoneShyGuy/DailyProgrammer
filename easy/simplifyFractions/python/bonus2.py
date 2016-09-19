@@ -21,26 +21,46 @@ for num in range(NumOfVars + 1, len(Bonus)):
     FractionList.append(Bonus[num].rstrip("\n").split(" "))
 # sexy. Now we can replace the Fractions with their Equations
 # I'll try to make a function so I can just call it when I need to
-def replace_variables(Equate, dict__):
+
+
+def replace_variables(equate, dict__):
     c = 0
     while c < len(dict__):
-		# use "c" to get a key from the dict. Then try and find that key in the string
-		dict_key = dict__.keys()[c]
-		letter_idx = Equate.find(dict_key)
-		# Messy. .find() returns -1 if the ite isn't found.
-		# so if not found, move on. If it is found, reset and try again.
-		if letter_idx == -1:
-			c += 1
-		else:
-			Equate = Equate.replace(dict_key, dict__[dict_key] )
-			c = 0
-	return Equate
+        # use "c" to get a key from the dict. Then try and find that key in the string
+        dict_key = dict__.keys()[c]
+        letter_idx = equate.find(dict_key)
+        # Messy. .find() returns -1 if the ite isn't found.
+        # so if not found, move on. If it is found, reset and try again.
+        if letter_idx == -1:
+            c += 1
+        else:
+            equate = equate.replace(dict_key, dict__[dict_key])
+            c = 0
+    return equate
+
+
 # Fuck. Yes. Now I have to factor out the letters. Gross
+def factor_letters(numerator, denominator):
+    # shorter_var = numerator if (len(numerator) < len(denominator)) else denominator
+    # print shorter_var
+    c = 0
+    while c < len(denominator):
+        current_var = denominator[c]
+        var_idx = numerator.find(current_var)
+        if var_idx == -1:
+            c += 1
+        else:
+            numerator = numerator.replace(current_var, "", 1)
+            denominator = denominator.replace(current_var, "", 1)
+            c = 0
+    print numerator + "/" + denominator
+
 
 # modify the FractionList piece by piece
 for item in FractionList:
-	for idx, fraction in enumerate(item):
-		item[idx] = replace_variables(fraction, VarDict)
-		# print fraction
+    for idx, fraction in enumerate(item):
+        item[idx] = replace_variables(fraction, VarDict)
+    # print item
 
-print FractionList
+# print FractionList
+factor_letters("abczy", "yacxzj")
