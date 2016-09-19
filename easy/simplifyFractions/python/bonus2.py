@@ -20,5 +20,23 @@ FractionList = []
 for num in range(NumOfVars + 1, len(Bonus)):
     FractionList.append(Bonus[num].rstrip("\n").split(" "))
 # sexy. Now we can replace the Fractions with their Equations
+# I'll try to make a function so I can just call it when I need to
+def replace_variables(Equate, dict__):
+	c = 0
+	while c < len(dict__):
+		# use "c" to get a key from the dict. Then try and find that key in the string
+		DictKey = dict__.keys()[c]
+		LetterIdx = Equate.find(DictKey)
+		# Messy. .find() returns -1 if the ite isn't found.
+		# so if not found, move on. If it is found, resest and try again.
+		if LetterIdx == -1:
+			c += 1
+		else:
+			Equate = Equate.replace(DictKey, dict__[DictKey] )
+			c = 0
+	return Equate
+# Fuck. Yes. Now I have to factor out the letters. Gross
 
-print FractionList
+TestE = "axcycz"
+print replace_variables(TestE, VarDict)
+
