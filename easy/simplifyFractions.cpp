@@ -19,6 +19,8 @@ int main(){
     if (myFile.is_open()){
         while (getline(myFile, line)){
             cout << line << "\n";
+            size_t found = line.find(" ");
+            cout << found << "\n";
         }
         myFile.close();
     }
