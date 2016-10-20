@@ -1,4 +1,7 @@
 # https://redd.it/576o8o
+# F:\Documents\dailyProgrammer\medium\mathagram
+# mathagram.py
+
 from random import randint
 
 class mathagram(object):
@@ -14,6 +17,20 @@ class mathagram(object):
 		doesn't have 3,6, or 9 values
 		"""
 							
+		self.first = first
+		self.second = second
+		self.third = third
+		self.fourth = fourth
+		self.fifth = fifth
+		self.sixth = sixth
+		if self.input.count(None) == 3:
+			self.level = 2
+			# print "Double"
+		else:
+			self.level = 1
+			# print "Single"
+		self.unused_nums *= self.level					
+							
 		for opt in self.input:
 			if not opt is None:
 				for char_ in opt:
@@ -24,18 +41,8 @@ class mathagram(object):
 						pass
 
 		# print self.unused_nums
-		self.first = first
-		self.second = second
-		self.third = third
-		self.fourth = fourth
-		self.fifth = fifth
-		self.sixth = sixth
-		if (fourth != None) and (fifth != None) and (sixth != None):
-			self.level = 2
-			# print "Double"
-		else:
-			self.level = 1
-			# print "Single"
+		self.unused_nums.sort()
+		print self.unused_nums
 			
 	def guess(self):
 		a = list(self.first)
@@ -58,11 +65,20 @@ class mathagram(object):
 			# print attempt
 		# print abc[0], abc[1], abc[2]
 		# print "{} + {} = {} : {}".format(abc[0], abc[1], abc[2], (abc[0] + abc[1]))
-		if (abc[0] + abc[1]) == abc[2]:
-			print "{} + {} = {}".format(abc[0], abc[1], abc[2])
-			return True
+		if self.level == 1:
+			if (abc[0] + abc[1]) == abc[2]:
+				print "{} + {} = {}".format(abc[0], abc[1], abc[2])
+				return True
+			else:
+				return False
 		else:
-			return False
+			if (abc[0] + abc[1] + abc[2] + abc[3]) == (abc[4] + abc[5]):
+				print "{} + {} + {} + {} = {} + {}".format(abc[0], abc[1], 
+														   abc[2], abc[3], 
+														   abc[4], abc[5])
+				return True
+			else:
+				return False
 			
 			"""
 			if (abc[0] + abc[1]) == abc[2]:
@@ -76,9 +92,13 @@ class mathagram(object):
 
 solved = False
 c = 0
+m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
+m.guess()
+"""
 while solved == False:
-	m = mathagram('xxx', 'x81', '9x4')
+	m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
 	solved = m.guess()
 	c += 1
 else:
 	print c
+"""
