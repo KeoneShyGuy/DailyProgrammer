@@ -42,14 +42,17 @@ class mathagram(object):
 
 		# print self.unused_nums
 		self.unused_nums.sort()
-		print self.unused_nums
+		# print self.unused_nums
 			
 	def guess(self):
 		a = list(self.first)
 		b = list(self.second)
 		c = list(self.third)
-		tempList = (a, b, c)
-		solved = False
+		d = list(self.fourth)
+		e = list(self.fifth)
+		f = list(self.sixth)
+		tempList = (a, b, c, d, e, f)
+		# solved = False
 		# while solved == False:
 		abc = list(tempList)
 		temp = self.unused_nums
@@ -74,8 +77,9 @@ class mathagram(object):
 		else:
 			if (abc[0] + abc[1] + abc[2] + abc[3]) == (abc[4] + abc[5]):
 				print "{} + {} + {} + {} = {} + {}".format(abc[0], abc[1], 
-														   abc[2], abc[3], 
-														   abc[4], abc[5])
+																					 abc[2], abc[3], 
+																					 abc[4], abc[5]
+																					 )
 				return True
 			else:
 				return False
@@ -92,6 +96,7 @@ class mathagram(object):
 
 solved = False
 c = 0
+"""
 m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
 m.guess()
 """
@@ -101,4 +106,3 @@ while solved == False:
 	c += 1
 else:
 	print c
-"""
