@@ -67,7 +67,7 @@ class mathagram(object):
 			abc.append(f)
 		if self.level == 3:
 			g = list(self.seventh)
-			h = list(self.eight)
+			h = list(self.eighth)
 			i = list(self.ninth)
 			abc.append(g)
 			abc.append(h)
@@ -94,7 +94,6 @@ class mathagram(object):
 				print "{} + {} = {}".format(abc[0], abc[1], abc[2])
 				return True
 			else:
-				print False
 				return False
 		elif self.level == 2:
 			if (abc[0] + abc[1] + abc[2] + abc[3]) == (abc[4] + abc[5]):
@@ -104,10 +103,16 @@ class mathagram(object):
 																					 )
 				return True
 			else:
-				print False
 				return False
 		elif self.level == 3:
-			pass
+			if (abc[0] + abc[1] + abc[2] + abc[3] + abc[4]) == (abc[5] + abc[6] + abc[7] + abc[8]):
+				print "{} + {} + {} + {} + {} = {} + {} + {} + {}".format(abc[0], abc[1], abc[2], 
+																											  abc[3], abc[4], abc[5],
+																											  abc[6], abc[7], abc[8]
+																											  )
+				return True
+			else:
+				return False
 			"""
 			if (abc[0] + abc[1]) == abc[2]:
 				print True
@@ -120,17 +125,39 @@ class mathagram(object):
 
 solved = False
 c = 0
-
+"""
 m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
 m.guess()
 """
 
-start = clock()
-while solved == False:
-	m = mathagram('xxx', 'xxx', '23x', '571', 'xxx', 'x82')
-	solved = m.guess()
-	c += 1
-else:
-	elapsed = (clock() - start)
-	print "{} attempts in {} seconds".format(c, round(elapsed, 2))
-"""
+programStart = clock()
+tests = [('1xx', 'xxx', '468'),
+			  ('xxx', 'x81', '9x4'),
+			  ('xxx', '5x1', '86x'),
+			  ('xxx', '39x', 'x75'),
+			  ('xxx', 'xxx', '5x3', '123', 'xxx', '795'),
+			  ('xxx', 'xxx', '23x', '571', 'xxx', 'x82'),
+			  ('xxx', 'xxx', 'xx7', '212', 'xxx', '889'),
+			  ('xxx', 'xxx', '1x6', '142', 'xxx', '533'),
+			  ('xxx', 'xxx', 'xxx', 'x29', '821', 'xxx', 'xxx', '8xx', '867'),
+			  ('xxx', 'xxx', 'xxx', '4x1', '689', 'xxx', 'xxx', 'x5x', '957'),
+			  ('xxx', 'xxx', 'xxx', '64x', '581', 'xxx', 'xxx', 'xx2', '623'),
+			  ('xxx', 'xxx', 'xxx', 'x81', '759', 'xxx', 'xxx', '8xx', '462'),
+			  ('xxx', 'xxx', 'xxx', '6x3', '299', 'xxx', 'xxx', 'x8x', '423'),
+			  ('xxx', 'xxx', 'xxx', '58x', '561', 'xxx', 'xxx', 'xx7', '993'),
+			  ('xxx', 'xxx', 'xxx', 'xxx', 'xxx', '987', '944', '921', '8xx'),
+			  ('987', '978', '111', '222', '33x', 'xxx', 'xxx', 'xxx', 'xxx')
+			  ]
+for equation in tests:
+	solved = False
+	c = 0
+	loopStart = clock()
+	while solved == False:
+		m = mathagram(*equation) # <== I learned something new!
+		solved = m.guess()
+		c += 1
+	else:
+		loopElapsed = (clock() - loopStart)
+		print "{} attempts in {} seconds".format(c, round(loopElapsed, 2))
+programElapsed = (clock() - programStart)
+print "All mathagrams calculated in {} seconds".format(programElapsed)
