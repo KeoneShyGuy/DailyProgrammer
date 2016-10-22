@@ -1,7 +1,7 @@
 # https://redd.it/576o8o
 # F:\Documents\dailyProgrammer\medium\mathagram
 # mathagram.py
-
+from time import clock
 from random import randint
 
 class mathagram(object):
@@ -23,12 +23,17 @@ class mathagram(object):
 		self.fourth = fourth
 		self.fifth = fifth
 		self.sixth = sixth
-		if self.input.count(None) == 3:
-			self.level = 2
-			# print "Double"
-		else:
+		self.seventh = seventh
+		self.eighth = eighth
+		self.ninth = ninth
+		if self.input.count(None) == 6:
 			self.level = 1
+			# print "Double"
+		elif self.input.count(None) == 3:
+			self.level = 2
 			# print "Single"
+		else:
+			self.level = 3
 		self.unused_nums *= self.level					
 							
 		for opt in self.input:
@@ -45,26 +50,42 @@ class mathagram(object):
 		# print self.unused_nums
 			
 	def guess(self):
-		a = list(self.first)
-		b = list(self.second)
-		c = list(self.third)
-		d = list(self.fourth)
-		e = list(self.fifth)
-		f = list(self.sixth)
-		tempList = (a, b, c, d, e, f)
+		abc  = []
+		if self.level >= 1:
+			a = list(self.first)
+			b = list(self.second)
+			c = list(self.third)
+			abc.append(a)
+			abc.append(b)
+			abc.append(c)
+		if self.level >= 2:
+			d = list(self.fourth)
+			e = list(self.fifth)
+			f = list(self.sixth)
+			abc.append(d)
+			abc.append(e)
+			abc.append(f)
+		if self.level == 3:
+			g = list(self.seventh)
+			h = list(self.eight)
+			i = list(self.ninth)
+			abc.append(g)
+			abc.append(h)
+			abc.append(i)
+		
 		# solved = False
 		# while solved == False:
-		abc = list(tempList)
 		temp = self.unused_nums
 		for idx,x in enumerate(abc):
-			for i, int_ in enumerate(x):
-				if int_ == 'x':
-					g = randint(0, (len(temp)-1))
-					replace = temp[g]
-					x[i] = str(replace)
-					temp.remove(replace)
-			attempt = int(''.join(x))
-			abc[idx] = attempt
+			if x != None:
+				for i, int_ in enumerate(x):
+					if int_ == 'x':
+						guess = randint(0, (len(temp)-1))
+						replace = temp[guess]
+						x[i] = str(replace)
+						temp.remove(replace)
+				attempt = int(''.join(x))
+				abc[idx] = attempt
 			# print attempt
 		# print abc[0], abc[1], abc[2]
 		# print "{} + {} = {} : {}".format(abc[0], abc[1], abc[2], (abc[0] + abc[1]))
@@ -73,8 +94,9 @@ class mathagram(object):
 				print "{} + {} = {}".format(abc[0], abc[1], abc[2])
 				return True
 			else:
+				print False
 				return False
-		else:
+		elif self.level == 2:
 			if (abc[0] + abc[1] + abc[2] + abc[3]) == (abc[4] + abc[5]):
 				print "{} + {} + {} + {} = {} + {}".format(abc[0], abc[1], 
 																					 abc[2], abc[3], 
@@ -82,8 +104,10 @@ class mathagram(object):
 																					 )
 				return True
 			else:
+				print False
 				return False
-			
+		elif self.level == 3:
+			pass
 			"""
 			if (abc[0] + abc[1]) == abc[2]:
 				print True
@@ -96,13 +120,17 @@ class mathagram(object):
 
 solved = False
 c = 0
-"""
+
 m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
 m.guess()
 """
+
+start = clock()
 while solved == False:
-	m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
+	m = mathagram('xxx', 'xxx', '23x', '571', 'xxx', 'x82')
 	solved = m.guess()
 	c += 1
 else:
-	print c
+	elapsed = (clock() - start)
+	print "{} attempts in {} seconds".format(c, round(elapsed, 2))
+"""
