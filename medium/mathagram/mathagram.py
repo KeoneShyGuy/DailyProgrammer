@@ -10,32 +10,16 @@ class mathagram(object):
 	                     fourth=None, fifth=None, sixth=None,
 						 seventh=None, eighth=None, ninth=None):
 		self.level = 0				 
-		self.unused_nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+		self.unused_nums = range(1, 10)
 		self.input = [first, second, third, fourth, fifth, sixth, seventh, eighth, ninth]
-		"""
-		Need to find a way to cancel the function if the input
-		doesn't have 3,6, or 9 values
-		"""
-							
-		self.first = first
-		self.second = second
-		self.third = third
-		self.fourth = fourth
-		self.fifth = fifth
-		self.sixth = sixth
-		self.seventh = seventh
-		self.eighth = eighth
-		self.ninth = ninth
 		if self.input.count(None) == 6:
 			self.level = 1
-			# print "Double"
 		elif self.input.count(None) == 3:
 			self.level = 2
-			# print "Single"
 		else:
 			self.level = 3
 		self.unused_nums *= self.level					
-							
+		#remove used numbers					
 		for opt in self.input:
 			if not opt is None:
 				for char_ in opt:
@@ -44,110 +28,72 @@ class mathagram(object):
 							self.unused_nums.remove(int(char_))
 					except ValueError:
 						pass
-
-		# print self.unused_nums
-		self.unused_nums.sort()
-		# print self.unused_nums
+		self.unused_nums.sort() # sorted for shits and giggles
 			
 	def guess(self):
 		abc  = []
 		if self.level >= 1:
-			a = list(self.first)
-			b = list(self.second)
-			c = list(self.third)
-			abc.append(a)
-			abc.append(b)
-			abc.append(c)
+			a, b, c = list(self.input[0:3])
+			abc.extend([a, b, c])
 		if self.level >= 2:
-			d = list(self.fourth)
-			e = list(self.fifth)
-			f = list(self.sixth)
-			abc.append(d)
-			abc.append(e)
-			abc.append(f)
+			d, e, f = list(self.input[3:6])
+			abc.extend([d, e, f,])
 		if self.level == 3:
-			g = list(self.seventh)
-			h = list(self.eighth)
-			i = list(self.ninth)
-			abc.append(g)
-			abc.append(h)
-			abc.append(i)
-		
-		# solved = False
-		# while solved == False:
-		temp = self.unused_nums
-		for idx,x in enumerate(abc):
-			if x != None:
-				for i, int_ in enumerate(x):
+			g, h, i = list(self.input[6:9])
+			abc.extend([g, h, i])
+		# basically replaces 'x' with a random unused number
+		for idx,currStr in enumerate(abc):
+			if currStr != None:
+				currStr = list(currStr)
+				for idx_, int_ in enumerate(currStr):
 					if int_ == 'x':
-						guess = randint(0, (len(temp)-1))
-						replace = temp[guess]
-						x[i] = str(replace)
-						temp.remove(replace)
-				attempt = int(''.join(x))
+						guess = randint(0, (len(self.unused_nums)-1))
+						replace = self.unused_nums[guess]
+						currStr[idx_] = str(replace)
+						self.unused_nums.remove(replace)
+				attempt = int(''.join(currStr))
 				abc[idx] = attempt
-			# print attempt
-		# print abc[0], abc[1], abc[2]
-		# print "{} + {} = {} : {}".format(abc[0], abc[1], abc[2], (abc[0] + abc[1]))
+		
 		if self.level == 1:
 			if (abc[0] + abc[1]) == abc[2]:
-				print "{} + {} = {}".format(abc[0], abc[1], abc[2])
+				print "{} + {} = {}".format(*abc[0:3])
 				return True
 			else:
 				return False
 		elif self.level == 2:
 			if (abc[0] + abc[1] + abc[2] + abc[3]) == (abc[4] + abc[5]):
-				print "{} + {} + {} + {} = {} + {}".format(abc[0], abc[1], 
-																					 abc[2], abc[3], 
-																					 abc[4], abc[5]
-																					 )
+				print "{} + {} + {} + {} = {} + {}".format(*abc[0:6])
 				return True
 			else:
 				return False
 		elif self.level == 3:
 			if (abc[0] + abc[1] + abc[2] + abc[3] + abc[4]) == (abc[5] + abc[6] + abc[7] + abc[8]):
-				print "{} + {} + {} + {} + {} = {} + {} + {} + {}".format(abc[0], abc[1], abc[2], 
-																											  abc[3], abc[4], abc[5],
-																											  abc[6], abc[7], abc[8]
-																											  )
+				print "{} + {} + {} + {} + {} = {} + {} + {} + {}".format(*abc[0:10])
 				return True
 			else:
 				return False
-			"""
-			if (abc[0] + abc[1]) == abc[2]:
-				print True
-				solved = True #not sure why indenting this gives me an error
-			else:
-				print False
-			"""
-		
-		
-
-solved = False
-c = 0
-"""
-m = mathagram('xxx', 'xxx', '5x3', '123', 'xxx', '795')
-m.guess()
-"""
-
+# end of class
+# running the class to make the calculations and print pretty things
 programStart = clock()
 tests = [('1xx', 'xxx', '468'),
-			  ('xxx', 'x81', '9x4'),
-			  ('xxx', '5x1', '86x'),
-			  ('xxx', '39x', 'x75'),
-			  ('xxx', 'xxx', '5x3', '123', 'xxx', '795'),
-			  ('xxx', 'xxx', '23x', '571', 'xxx', 'x82'),
-			  ('xxx', 'xxx', 'xx7', '212', 'xxx', '889'),
-			  ('xxx', 'xxx', '1x6', '142', 'xxx', '533'),
-			  ('xxx', 'xxx', 'xxx', 'x29', '821', 'xxx', 'xxx', '8xx', '867'),
-			  ('xxx', 'xxx', 'xxx', '4x1', '689', 'xxx', 'xxx', 'x5x', '957'),
-			  ('xxx', 'xxx', 'xxx', '64x', '581', 'xxx', 'xxx', 'xx2', '623'),
-			  ('xxx', 'xxx', 'xxx', 'x81', '759', 'xxx', 'xxx', '8xx', '462'),
-			  ('xxx', 'xxx', 'xxx', '6x3', '299', 'xxx', 'xxx', 'x8x', '423'),
-			  ('xxx', 'xxx', 'xxx', '58x', '561', 'xxx', 'xxx', 'xx7', '993'),
-			  ('xxx', 'xxx', 'xxx', 'xxx', 'xxx', '987', '944', '921', '8xx'),
-			  ('987', '978', '111', '222', '33x', 'xxx', 'xxx', 'xxx', 'xxx')
-			  ]
+		  ('xxx', 'x81', '9x4'),
+		  ('xxx', '5x1', '86x'),
+		  ('xxx', '39x', 'x75'),
+		  ('xxx', 'xxx', '5x3', '123', 'xxx', '795'),
+		  ('xxx', 'xxx', '23x', '571', 'xxx', 'x82'),
+		  ('xxx', 'xxx', 'xx7', '212', 'xxx', '889'),
+		  ('xxx', 'xxx', '1x6', '142', 'xxx', '533'),
+		  ('xxx', 'xxx', 'xxx', 'x29', '821', 'xxx', 'xxx', '8xx', '867'),
+		  ('xxx', 'xxx', 'xxx', '4x1', '689', 'xxx', 'xxx', 'x5x', '957'),
+		  ('xxx', 'xxx', 'xxx', '64x', '581', 'xxx', 'xxx', 'xx2', '623'),
+		  ('xxx', 'xxx', 'xxx', 'x81', '759', 'xxx', 'xxx', '8xx', '462'),
+		  ('xxx', 'xxx', 'xxx', '6x3', '299', 'xxx', 'xxx', 'x8x', '423'),
+		  ('xxx', 'xxx', 'xxx', '58x', '561', 'xxx', 'xxx', 'xx7', '993'),
+		  # the one below takes 5-30 minutes to solve
+		  ('xxx', 'xxx', 'xxx', 'xxx', 'xxx', '987', '944', '921', '8x5'),
+		  ('987', '978', '111', '222', '33x', 'xxx', 'xxx', 'xxx', 'xxx')
+		  ]
+# main guessing occurs here. Make a new object each time. Not sure if safe.		  
 for equation in tests:
 	solved = False
 	c = 0
@@ -158,6 +104,12 @@ for equation in tests:
 		c += 1
 	else:
 		loopElapsed = (clock() - loopStart)
-		print "{} attempts in {} seconds".format(c, round(loopElapsed, 2))
+		print "{} attempts in {} seconds.".format(c, round(loopElapsed, 3))
+#finalize and beautify
 programElapsed = (clock() - programStart)
-print "All mathagrams calculated in {} seconds".format(programElapsed)
+if programElapsed > 60:
+	pMinutes = programElapsed // 60
+	pSeconds = programElapsed % 60
+	print "All mathagrams calculated in {}:{} minuetes.".format(pMinutes, round(pSeconds, 3))
+else:
+	print "All mathagrams calculated in {} seconds.".format(round(programElapsed, 3))
