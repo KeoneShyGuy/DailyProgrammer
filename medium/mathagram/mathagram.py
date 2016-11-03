@@ -98,18 +98,22 @@ for equation in tests:
 	solved = False
 	c = 0
 	loopStart = clock()
-	while solved == False:
+	while solved == False and c <= 1000000:
 		m = mathagram(*equation) # <== I learned something new!
 		solved = m.guess()
 		c += 1
 	else:
-		loopElapsed = (clock() - loopStart)
-		print "{} attempts in {} seconds.".format(c, round(loopElapsed, 3))
+		if c >= 1000000:
+			print "Guessed a hundred thousand times. No answer this time."
+			print equation
+		else:
+			loopElapsed = (clock() - loopStart)
+			print "{} attempts in {} seconds.".format(c, round(loopElapsed, 3))
 #finalize and beautify
 programElapsed = (clock() - programStart)
 if programElapsed > 60:
 	pMinutes = programElapsed // 60
 	pSeconds = programElapsed % 60
-	print "All mathagrams calculated in {}:{} minuetes.".format(pMinutes, round(pSeconds, 3))
+	print "All mathagrams calculated in {}:{} minutes.".format(int(pMinutes), round(pSeconds, 3))
 else:
 	print "All mathagrams calculated in {} seconds.".format(round(programElapsed, 3))
