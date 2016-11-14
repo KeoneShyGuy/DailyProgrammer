@@ -1,6 +1,9 @@
-#include <Python_scrap.h>
+#include "Python_scrap.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
-string* split_line(string line, const char* splitter, bool deb){
+string* Python_scrap::split_line(string line, const char* splitter, bool deb){
     int c = 0;
     int locationBuff[100]; //will store 100 locations. Shouldn't need more than that
     locationBuff[0] = 0;;
