@@ -1,6 +1,6 @@
 #include "Python_scrap.h"
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 using namespace std;
 
 string* Python_scrap::split_line(string line, const char* splitter, bool deb){
@@ -27,4 +27,20 @@ string* Python_scrap::split_line(string line, const char* splitter, bool deb){
         }
     }
     return lineArr;
+}
+
+vector <string> split(string line, const char* delim, bool debug){
+    int vSize = 0; //the size of the new vector. I may not need this
+    vector <string> splitArr;
+    size_t stringStart, stringEnd, tempLoc; // I feel smart as fuck now
+    int delimLoc = 0; //may product an error if the delim is the first char. Error test later
+    while (line.find(delim, (delimLoc)) != string::npos){
+        delimLoc = line.find(delim, delimLoc);
+        splitArr.push_back(line.substr());
+    }
+    if (debug){
+        for (string s : splitArr)
+            cout << s << "\n";
+    }
+    return splitArr;
 }
