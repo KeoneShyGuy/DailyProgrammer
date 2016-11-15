@@ -7,8 +7,12 @@ using namespace std;
 int main()
 {
     string meh = "Some old hags came around here and took our apples";
+    vector<string> test;
     Python_scrap python;
-    python.split_line(meh, " ", true);
-    python.split(meh, " ", true);
+    //python.split_line(meh, " ", true);
+    test = python.split(meh, " ");
+    cout << test.size();
+    for (string n : test)
+        cout << n << "\n";
     return 0;
 }

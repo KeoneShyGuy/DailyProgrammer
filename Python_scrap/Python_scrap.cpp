@@ -29,18 +29,32 @@ string* Python_scrap::split_line(string line, const char* splitter, bool deb){
     return lineArr;
 }
 
-vector <string> split(string line, const char* delim, bool debug){
+vector <string> Python_scrap::split(string line, const char* delim, bool debug){
     int vSize = 0; //the size of the new vector. I may not need this
+    int c = 0;
     vector <string> splitArr;
-    size_t stringStart, stringEnd, tempLoc; // I feel smart as fuck now
+    string newStr;
+    size_t length, tempLoc; // I feel smart as fuck now
     int delimLoc = 0; //may product an error if the delim is the first char. Error test later
-    while (line.find(delim, (delimLoc)) != string::npos){
-        delimLoc = line.find(delim, delimLoc);
-        splitArr.push_back(line.substr());
+    //cout << "String Length: " << line.size() << "\n";
+    while (line.find(delim, delimLoc) != string::npos){
+        if (c == 0)
+            tempLoc = delimLoc;
+        else
+            tempLoc = delimLoc + 1;
+        delimLoc = line.find(delim, tempLoc);
+        if (delimLoc == (-1))
+            delimLoc = line.size();
+        length = delimLoc - tempLoc;
+        //cout << "TempLoc : " << tempLoc << " | DelimLoc: " << delimLoc << " | Length: " << length << "\n";
+        newStr = line.substr(tempLoc, length);
+        //cout << newStr << "\n";
+        splitArr.push_back(newStr);
+        c++;
     }
     if (debug){
         for (string s : splitArr)
-            cout << s << "\n";
+            cout << "|" << s << "|\n";
     }
     return splitArr;
 }
