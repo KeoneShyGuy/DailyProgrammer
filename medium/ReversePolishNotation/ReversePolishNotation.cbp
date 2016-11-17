@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../../Python_scrap/Python_scrap.cpp" />
+		<Unit filename="../../Python_scrap/Python_scrap.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
