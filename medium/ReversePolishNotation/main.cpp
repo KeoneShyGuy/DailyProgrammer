@@ -3,7 +3,7 @@
 #include <cmath>
 #include <algorithm> //find()
 #include <stdlib.h> //atoi
-#include "F:\Documents\DailyProgrammer\Python_scrap\Python_scrap.h"
+#include "..\..\Python_scrap\Python_scrap.h" //Should work wherever I download it now
 
 using namespace std;
 int factorial(int factor);
