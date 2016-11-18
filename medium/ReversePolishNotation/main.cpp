@@ -1,27 +1,32 @@
 // https://redd.it/5c5jx9
 #include <iostream>
-#include <cmath>
-#include <algorithm> //find()
-#include <stdlib.h> //atoi and itoa
-#include <sstream> //ostringstream
-
+#include <cmath>        //pow() and fmod()
+#include <algorithm>    //find()
+#include <stdlib.h>     //atoi and itoa
+#include <iomanip>      //setprecision
+//I got C++ 11 working midway through, but I don't feel like fixing everything
 #include "..\..\Python_scrap\Python_scrap.h" //Should work wherever I download it now
 
 using namespace std;
 int factorial(int factor);
-float rpn(vector<string> e);
+double rpn(vector<string> e);
 
 int main()
 {
     Python_scrap py;
-    vector<string> eqList;
-    string equation = "1 2 3 4 ! + - / 100 *";
-    cout << "Equation: " << equation << "\n";
-    eqList = py.split(equation, " ");
-    rpn(eqList);
-    //atoi() converts to a string to an int
-    //cout << (atoi("512") + atoi("400"));
 
+    string eq1 = "1 2 3 4 ! + - / 100 *";
+    string eq2 = "0.5 1 2 ! * 2 1 ^ + 10 + *";
+    string eq3 = "100 807 3 331 * + 2 2 1 + 2 + * 5 ^ * 23 10 558 * 10 * + + *";
+    vector<string> equations = {eq1, eq2, eq3};
+    vector<string> eqList;
+    for (string eq : equations){
+        string split = "\n______________________________________\n";
+        eqList = py.split(eq, " ");
+        cout << "Input Equation:\n " << eq << "\n";
+        cout.setf(ios::fixed);
+        cout << "Final Answer:\n" << std::setprecision(0) << rpn(eqList) << split;
+    }
     return 0;
 }
 
@@ -32,72 +37,65 @@ int factorial(int factor){
     return product;
 }
 
-float rpn(vector<string> e){
-    vector<float> stck;
-    //int idx = 0;
-
+double rpn(vector<string> e){
     for (int i = 0; i < e.size(); i++){ //look into signed vs unsigned
         if (e[i] == "!"){
-            //cout << "Factorial\n";
-            int factor = factorial(atoi(e[i-1].c_str()));
-            //cout << factor << "\n";
-            char buff[12];
-            itoa(factor, buff, 10);
-            //e[i-1] =
+            int factor = factorial(stoi(e[i-1]));
             e.erase(e.begin() + i);
-            e[i - 1] = buff;
+            e[i - 1] = to_string(factor);
             i--;
         }
         else if (e[i] == "+"){
-            //cout << "Addition\n";
-            float sum = atof(e[i - 1].c_str()) + atof(e[i - 2].c_str());
-            //cout << sum << "\n";
+            double sum = stod(e[i - 2]) + stod(e[i - 1]);
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
-            ostringstream floatSum;
-            floatSum << sum;
-            string buffer = floatSum.str();
-            e[i-2] = buffer;
+            e[i-2] = to_string(sum);
+            i -= 2;
         }
         else if (e[i] == "-"){
-            //cout << "Subtraction\n";
-            float difference = atof(e[i-2].c_str()) - atof(e[i-1].c_str());
+            double difference = stod(e[i-2]) - stod(e[i-1]);
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
-            ostringstream floatDiff;
-            floatDiff << difference;
-            string buffer = floatDiff.str();
-            e[i-2] = buffer;
+            e[i-2] = to_string(difference);
+            i -= 2;
         }
         else if (e[i] == "*" || e[i] == "x"){
-            //cout << "Multiplication\n";
+            double product = stod(e[i-2]) * stod(e[i-1]);
+            e.erase(e.begin() + i);
+            e.erase(e.begin() + i - 1);
+            e[i-2] = to_string(product);
+            i -= 2;
         }
         else if (e[i] == "/"){
-            //cout << "Float division\n";
+            double quotient = stod(e[i-2]) / stod(e[i-1]);
+            e.erase(e.begin() + i);
+            e.erase(e.begin() + i - 1);
+            e[i-2] = to_string(quotient);
+            i -= 2;
         }
         else if (e[i] == "//"){
-            //cout << "Integer division\n";
+            int quotient = int(stod(e[i-2]) / stod(e[i-1]));
+            e.erase(e.begin() + i);
+            e.erase(e.begin() + i - 1);
+            e[i-2] = to_string(quotient);
+            i -= 2;
         }
         else if (e[i] == "%"){
-            //cout << "Modulus\n";
+            double remainder = fmod(stod(e[i-2]), stod(e[i-1]));
+            e.erase(e.begin() + i);
+            e.erase(e.begin() + i - 1);
+            e[i-2] = to_string(remainder);
+            i -= 2;
         }
         else if (e[i] == "^"){
-            //cout << "Power\n";
+            double power = pow(stod(e[i-2]), stod(e[i-1]));
+            e.erase(e.begin() + i);
+            e.erase(e.begin() + i - 1);
+            e[i-2] = to_string(power);
+            i -= 2;
         }
-        else{
-            //cout << stck[i] << "\n";
-            // cout << atoi(stck[i].c_str());
-            // .c_str() converts a string to a constant char*
-            stck.push_back(float(atoi(e[i].c_str())));
-        }
+        else{}
     }
-    cout << "Stack:\n";
-    for (float f : stck)
-        cout << f << "\n";
-    cout << "Input Equation:\n";
-    for (string s : e)
-        cout << s << "\n";
 
-
-    return 0;
+    return stod(e[0]);
 }
