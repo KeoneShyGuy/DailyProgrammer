@@ -23,7 +23,7 @@ int main()
     for (string eq : equations){
         string split = "\n______________________________________\n";
         eqList = py.split(eq, " ");
-        cout << "Input Equation:\n " << eq << "\n";
+        cout << "Input Equation:\n" << eq << "\n";
         cout.setf(ios::fixed);
         cout << "Final Answer:\n" << std::setprecision(0) << rpn(eqList) << split;
     }
@@ -38,63 +38,63 @@ int factorial(int factor){
 }
 
 double rpn(vector<string> e){
-    for (int i = 0; i < e.size(); i++){ //look into signed vs unsigned
-        if (e[i] == "!"){
+    for (unsigned int i = 0; i < e.size(); i++){ //look into signed vs unsigned
+        if (e[i] == "!"){ // Factorial
             int factor = factorial(stoi(e[i-1]));
             e.erase(e.begin() + i);
             e[i - 1] = to_string(factor);
             i--;
         }
-        else if (e[i] == "+"){
+        else if (e[i] == "+"){ // Addition
             double sum = stod(e[i - 2]) + stod(e[i - 1]);
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(sum);
             i -= 2;
         }
-        else if (e[i] == "-"){
+        else if (e[i] == "-"){ // Subtraction
             double difference = stod(e[i-2]) - stod(e[i-1]);
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(difference);
             i -= 2;
         }
-        else if (e[i] == "*" || e[i] == "x"){
+        else if (e[i] == "*" || e[i] == "x"){ // Multiplication
             double product = stod(e[i-2]) * stod(e[i-1]);
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(product);
             i -= 2;
         }
-        else if (e[i] == "/"){
+        else if (e[i] == "/"){ // Float Division
             double quotient = stod(e[i-2]) / stod(e[i-1]);
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(quotient);
             i -= 2;
         }
-        else if (e[i] == "//"){
+        else if (e[i] == "//"){ // Int Division
             int quotient = int(stod(e[i-2]) / stod(e[i-1]));
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(quotient);
             i -= 2;
         }
-        else if (e[i] == "%"){
+        else if (e[i] == "%"){ // Modulus
             double remainder = fmod(stod(e[i-2]), stod(e[i-1]));
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(remainder);
             i -= 2;
         }
-        else if (e[i] == "^"){
+        else if (e[i] == "^"){ // Power
             double power = pow(stod(e[i-2]), stod(e[i-1]));
             e.erase(e.begin() + i);
             e.erase(e.begin() + i - 1);
             e[i-2] = to_string(power);
             i -= 2;
         }
-        else{}
+        else{/*Don't do a damn thing*/}
     }
 
     return stod(e[0]);
