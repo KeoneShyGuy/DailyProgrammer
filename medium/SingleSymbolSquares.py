@@ -38,15 +38,16 @@ printGrid(grid)
 oCorners = ['O', 'O', 'O', 'O']
 xCorners = ['X', 'X', 'X', 'X']
 
-length = 2
+length = 1
+xIdx, yIdx = 0, 0
 
-while arrSize:
-    xIdx, yIdx = 0, 0
-    while (yIdx < arrSize):
-        print('Y index = ', yIdx)
+while (arrSize and ((xIdx + length) < arrSize)):
+    
+    while ((yIdx +length) < arrSize and (xIdx +length)):
+        print('(%i, %i)' % (xIdx, yIdx))
         corners = [grid[xIdx][yIdx], grid[xIdx][yIdx + length],
                    grid[xIdx + length][yIdx], grid[xIdx + length][yIdx + length]]
-        print(corners)
+        #print(corners)
     #for xIdx, row in enumerate(grid):
         #print(xIdx)
         #for 
@@ -58,8 +59,11 @@ while arrSize:
         yIdx += 1            
         #arrSize = abs(int(input('Enter the size of the array.\nEnter 0 to exit:')))
         #grid = createGrid(arrSize)
-        printGrid(grid)
-
+        #printGrid(grid)
+        if ((yIdx + length) == arrSize):
+            print('End of Row!')
+            xIdx += 1
+            yIdx = 0
      
 #if (grid[0][0] == grid[0][1]):
 #    print ('True')    
