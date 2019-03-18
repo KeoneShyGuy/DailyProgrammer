@@ -20,50 +20,85 @@ def printGrid(someList):
         for char in rowB:
             print (char, end=' ')
         print('')
-        
+    print('\n ')
+    
 #checks the corners of squares and calls fixGrid
 #and call fixGrid if all points match up.
-#def checkGrid(gridArray):
+def checkGrid(gridArr):
+    oCorners = ['O', 'O', 'O', 'O']
+    xCorners = ['X', 'X', 'X', 'X']
+
+    length = 0
+    #xIdx, yIdx = 0, 0
+    allCorners = []
+
+    while (length < arrSize):
+        length += 1
+        xIdx, yIdx = 0, 0
+        while (arrSize and ((xIdx + length) < arrSize)):
+            bFoundSquare = False
+            
+            while ((yIdx +length) < arrSize and (xIdx +length) < arrSize):
+                corners = [gridArr[xIdx][yIdx], gridArr[xIdx][yIdx + length],
+                           gridArr[xIdx + length][yIdx], gridArr[xIdx + length][yIdx + length]]
+                if (corners == oCorners or corners == xCorners):
+                    #bFoundSquare = True
+                    allCorners.append([xIdx, yIdx])
+                    allCorners.append([xIdx, yIdx + length])
+                    allCorners.append([xIdx + length, yIdx])
+                    allCorners.append([xIdx + length, yIdx + length])
+                yIdx += 1            
+                if ((yIdx + length) == arrSize):
+                    xIdx += 1
+                    yIdx = 0
+            #print('Full Check Complete')
+            if bFoundSquare:
+                print('These corners match at length %d bruh:' % length, end='')
+                for address in allCOrners:
+                    print (address, end=",")
+
+    filteredCorners = []
+    for idx in allCorners:
+        if (idx not in filteredCorners): filteredCorners.append(idx)
+        #else: print('old')
+
+    allCorners = filteredCorners
+    #print(allCorners)
+    return allCorners
 
 #fixes the grid by switching to another character
 #and calling checkGrid. May not be needed.
-#def fixGrid(gridArr):
+def fixGrid(gridArr, idxList):
+    if (len(idxList) % 2 == 0):
+        #print('even')
+        for idx in idxList[1::2]:
+            if (gridArr[idx[0]][idx[1]] == 'X'): gridArr[idx[0]][idx[1]] = 'O'
+            else: gridArr[idx[0]][idx[1]] = 'X'
+            if not checkGrid(gridArr):
+                #print('break')
+                break
+    else:
+        #print('odd')
+        for idx in idxList[::2]:
+            if (gridArr[idx[0]][idx[1]] == 'X'): gridArr[idx[0]][idx[1]] = 'O'
+            else: gridArr[idx[0]][idx[1]] = 'X'
+            if not checkGrid(gridArr):
+                #print('break')
+                break
+            
+    return gridArr
 
-arrSize = abs(int(input('Enter the size of the array.\nEnter 0 to exit:')))
+arrSize = abs(int(input('Enter the size of the array.\nEnter 0 to exit: ')))
 
 grid = createGrid(arrSize)
 printGrid(grid)
-#print(len(grid))    
-
-oCorners = ['O', 'O', 'O', 'O']
-xCorners = ['X', 'X', 'X', 'X']
-
-length = 1
-xIdx, yIdx = 0, 0
-
-while (arrSize and ((xIdx + length) < arrSize)):
+attempts = 0
+while checkGrid(grid):
+    if (attempts % 64== 0):
+        grid = createGrid(arrSize)
+        print('REDO # ', (attempts // 64))
+    attempts += 1
+    grid = fixGrid(grid, checkGrid(grid))
     
-    while ((yIdx +length) < arrSize and (xIdx +length)):
-        print('(%i, %i)' % (xIdx, yIdx))
-        corners = [grid[xIdx][yIdx], grid[xIdx][yIdx + length],
-                   grid[xIdx + length][yIdx], grid[xIdx + length][yIdx + length]]
-        #print(corners)
-    #for xIdx, row in enumerate(grid):
-        #print(xIdx)
-        #for 
-        #corners = [grid[xIdx][xIdx], grid[xIdx][xIdx+length],
-               #grid[xIdx+length][xIdx], grid[xIdx+length][xIdx+length]]
-        #print(corners)
-        if (corners == oCorners or corners == xCorners):
-            print('These corners match bruh')
-        yIdx += 1            
-        #arrSize = abs(int(input('Enter the size of the array.\nEnter 0 to exit:')))
-        #grid = createGrid(arrSize)
-        #printGrid(grid)
-        if ((yIdx + length) == arrSize):
-            print('End of Row!')
-            xIdx += 1
-            yIdx = 0
-     
-#if (grid[0][0] == grid[0][1]):
-#    print ('True')    
+print('Done in %i attempts!' % attempts)
+printGrid(grid)
