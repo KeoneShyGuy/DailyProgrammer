@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# cython: language_level=3
 #https://www.reddit.com/r/dailyprogrammer/comments/9z3mjk/20181121_challenge_368_intermediate_singlesymbol/
 #compiled with python 3.5.3
 from random import choice
