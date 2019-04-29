@@ -41,13 +41,13 @@ namespace DailyProgrammer
         }
         // a C# version of Python's itertools.permutations() for int arrays
         // struglling between using arrays and lists
-        static public IEnumerable<int> Permutations(int[] iterable, int pLen = 0)
+        static public IEnumerable<int[]> Permutations(int[] iterable, int pLen = 0)
         {
-            List<int> pool = new List<int>(iterable);
-            List<int> perms = new List<int>();
+            int[] pool = new int[iterable.Length];
+            pool = iterable;
             int iterLen = iterable.Length;
             int permLen = pLen != 0 ? pLen : iterLen;
-            
+
             if (permLen > iterLen)
             {
                 Console.WriteLine("Error: Permutation length is larger the the iterable's length");
@@ -71,8 +71,39 @@ namespace DailyProgrammer
             {
                 temp.Add(pool[i]);
             }
-            perms.Add(temp);
-            yield return perms;
+            int[] tempArr = temp.ToArray();
+            yield return tempArr;
+            while (iterLen < 0)
+            {
+                List<int> rangeList = new List<int>();
+                foreach (int i in Range(0, permLen, -1))
+                {
+                    rangeList.Add(i);
+                }
+                foreach (int i in rangeList)
+                {
+                    cycles[i] -= 1;
+                    if (cycles[i] == 0)
+                    {
+                        //List<int> tempIndices = indices.Skip(i)
+                    }
+                    else
+                    {
+                        int j = cycles[i];
+                        int tempValue = indices[i];
+                        indices[i] = indices[indices.Count - 1 - j];
+                        indices[indices.Count - 1 - j] = tempValue;
+                        List<int[]> yList = new List<int[]>();
+                        foreach (int[] h in indices.Skip(permLen))
+                        {
+                            yList.Add(h);
+                        }
+                        yield return yList;
+                        yield break;
+
+                    }
+                }
+            }
             // Console.WriteLine(permLen.ToString());
 
             yield break;
@@ -98,13 +129,17 @@ namespace DailyProgrammer
             }
             
             */
-            List<int> permTest = new List<int>(PySharp.Permutations(new int[] { 7, 8, 2, -2, 90 }, 2));
-            Console.WriteLine(permTest[0]);
-            foreach (int num in permTest)
+            // List<int> permTest = new List<int>(PySharp.Permutations(new int[] { 7, 8, 2, -2, 90 }, 2));
+
+            foreach (int[] num in PySharp.Permutations(new int[] { 7, 8, 2, -2, 90 }, 2))
             {
-                Console.WriteLine(num);
+                foreach (int n in num)
+                {
+                    Console.Write(n + " ");
+                }
+                Console.WriteLine();
             }
-            
+
             int Fit(int bigX, int bigY, int smallX, int smallY)
             {
                 int totalX = bigX / smallX;
@@ -124,13 +159,13 @@ namespace DailyProgrammer
                 int smallX, int smallY, int smallZ)
             {
                 int attempt = 1;
-                int[] bigDimensions = new int[3] {bigX, bigY, bigZ };
+                int[] bigDimensions = new int[3] { bigX, bigY, bigZ };
                 int[] smallDimensions = new int[3] { smallX, smallY, smallZ };
 
                 return 0;
             }
-            int X = 10, Y = 10, Z = 10, x = 1, y = 1, z =1;
-            
+            int X = 10, Y = 10, Z = 10, x = 1, y = 1, z = 1;
+
             // System.Console.WriteLine(Fit(X, Y, x, y));
 
             // System.Console.WriteLine(Fit2(X, Y, x, y));
