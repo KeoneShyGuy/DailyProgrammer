@@ -13,11 +13,23 @@ namespace DailyProgrammer
             Console.WriteLine("{0}:{1}", msg, value);
         }
 
+        static public int Factorial(int num)
+        {
+            int i = 2;
+            int factor = 2;
+            while (i < num)
+            {
+                i++;
+                factor *= i;
+            }
+            return factor;
+        }
+
         static public void PrintElement<T>(T[] arr)
         {
             foreach (T elem in arr)
             {
-                Console.WriteLine(elem);
+                Console.Write(elem + " ");
             }
         }
         // a C# version of Python's range()
@@ -41,7 +53,9 @@ namespace DailyProgrammer
         }
         // a C# version of Python's itertools.permutations() for int arrays
         // struglling between using arrays and lists
+        /*
         static public IEnumerable<int[]> Permutations(int[] iterable, int pLen = 0)
+        
         {
             int[] pool = new int[iterable.Length];
             pool = iterable;
@@ -94,11 +108,13 @@ namespace DailyProgrammer
                         indices[i] = indices[indices.Count - 1 - j];
                         indices[indices.Count - 1 - j] = tempValue;
                         List<int[]> yList = new List<int[]>();
+                        /*
                         foreach (int[] h in indices.Skip(permLen))
                         {
                             yList.Add(h);
                         }
                         yield return yList;
+                        
                         yield break;
 
                     }
@@ -107,7 +123,64 @@ namespace DailyProgrammer
             // Console.WriteLine(permLen.ToString());
 
             yield break;
-        }
+        }*/
+
+        // second attempt at permutations
+        static public int[][] Permuations(int[] toPerm, int pLen=0)
+        {   
+            // creating the jagged array that will hold all fof the perms
+            int permLen;
+            if (pLen == 0)
+            {
+                permLen = toPerm.Length;
+            }
+            else
+            {
+                permLen = pLen;
+            }
+
+            int tempArrLen = toPerm.Length;
+            int tempPermLen = permLen;
+            int rows = Factorial(toPerm.Length) / ((permLen != toPerm.Length) ? Factorial(toPerm.Length - permLen) : 1);
+            /*
+            int rows = tempArrLen;
+            while (tempPermLen > 1)
+            {
+                tempArrLen -= 1;
+                tempPermLen -= 1;
+                rows *= tempArrLen;
+                System.Console.WriteLine(rows);
+            }
+            */
+            System.Console.WriteLine(rows);
+            int[][] pool = new int[rows][];
+            for (int j = 0; j < rows; j++)
+            {
+                pool[j] = new int[permLen];
+            }
+
+            int i = 0;
+
+            for (int x = 0; x < rows; x++)
+            {
+                for (int y = 0; y < permLen; y++)
+                {
+                    pool[x][y] = i;
+                    i++;
+                }
+            }
+            // trying to rewrite python's itertools.permutations() in C#
+            int n = toPerm.Length;  // to save time, these should probably be higher up
+            int r = permLen;
+            if (r > n)
+            {
+                System.Console.WriteLine("Error: The desired permutation length is longer than the array length");
+                return null;
+            }
+
+
+            return pool;
+        }        
     }
     class Program
     {
@@ -130,14 +203,11 @@ namespace DailyProgrammer
             
             */
             // List<int> permTest = new List<int>(PySharp.Permutations(new int[] { 7, 8, 2, -2, 90 }, 2));
-
-            foreach (int[] num in PySharp.Permutations(new int[] { 7, 8, 2, -2, 90 }, 2))
+            int [][] pytest = PySharp.Permuations(new int[] { 5, 4, 7, 5, 12 }, 3);
+            for (int i = 0; i < pytest.Length; i++)
             {
-                foreach (int n in num)
-                {
-                    Console.Write(n + " ");
-                }
-                Console.WriteLine();
+                PySharp.PrintElement(pytest[i]);
+                System.Console.WriteLine();
             }
 
             int Fit(int bigX, int bigY, int smallX, int smallY)
