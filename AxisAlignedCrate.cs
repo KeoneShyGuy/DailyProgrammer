@@ -12,7 +12,6 @@ namespace DailyProgrammer
         {
             Console.WriteLine("{0}:{1}", msg, value);
         }
-
         static public int Factorial(int num)
         {
             int i = 2;
@@ -24,7 +23,6 @@ namespace DailyProgrammer
             }
             return factor;
         }
-
         static public void PrintElement<T>(T[] arr)
         {
             foreach (T elem in arr)
@@ -54,8 +52,7 @@ namespace DailyProgrammer
         // a C# version of Python's itertools.permutations() for int arrays
         // struglling between using arrays and lists
         /*
-        static public IEnumerable<int[]> Permutations(int[] iterable, int pLen = 0)
-        
+        static public IEnumerable<int[]> Permutations(int[] iterable, int pLen = 0)        
         {
             int[] pool = new int[iterable.Length];
             pool = iterable;
@@ -113,15 +110,12 @@ namespace DailyProgrammer
                         {
                             yList.Add(h);
                         }
-                        yield return yList;
-                        
+                        yield return yList;                        
                         yield break;
-
                     }
                 }
             }
             // Console.WriteLine(permLen.ToString());
-
             yield break;
         }*/
 
@@ -177,8 +171,6 @@ namespace DailyProgrammer
                 System.Console.WriteLine("Error: The desired permutation length is longer than the array length");
                 return null;
             }
-
-
             return pool;
         }        
     }
@@ -199,8 +191,7 @@ namespace DailyProgrammer
             foreach (int num in PySharp.Range(-20, 3, -5))
             {
                 Console.Write(num.ToString() + " ");
-            }
-            
+            }            
             */
             // List<int> permTest = new List<int>(PySharp.Permutations(new int[] { 7, 8, 2, -2, 90 }, 2));
             int [][] pytest = PySharp.Permuations(new int[] { 5, 4, 7, 5, 12 }, 3);
@@ -209,14 +200,12 @@ namespace DailyProgrammer
                 PySharp.PrintElement(pytest[i]);
                 System.Console.WriteLine();
             }
-
             int Fit(int bigX, int bigY, int smallX, int smallY)
             {
                 int totalX = bigX / smallX;
                 int totalY = bigY / smallY;
                 return totalX * totalY;
             }
-
             int Fit2(int bigX, int bigY, int smallX, int smallY)
             {
                 int fit1 = Fit(bigX, bigY, smallX, smallY);
@@ -224,14 +213,12 @@ namespace DailyProgrammer
                 int totalY = bigY / smallX;
                 return fit1 >= (totalX * totalY) ? fit1 : (totalX * totalY);
             }
-
             int Fit3(int bigX, int bigY, int bigZ,
                 int smallX, int smallY, int smallZ)
             {
                 int attempt = 1;
                 int[] bigDimensions = new int[3] { bigX, bigY, bigZ };
                 int[] smallDimensions = new int[3] { smallX, smallY, smallZ };
-
                 return 0;
             }
             int X = 10, Y = 10, Z = 10, x = 1, y = 1, z = 1;
