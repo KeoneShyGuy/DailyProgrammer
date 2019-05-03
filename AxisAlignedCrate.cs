@@ -42,7 +42,11 @@ namespace DailyProgrammer
 
             if (bPrintRowNum)
                 System.Console.WriteLine("# of permutations: " + rows);
-            return new int[rows][];
+            int[][] returnArr = new int[rows][];
+            for (int i = 0; i < rows; i++)
+                returnArr[i] = new int[permLength];
+
+            return returnArr;
         }
         // second attempt at permutations. A more simple one, not the one from Python.
         static public void Permuations<T>(T[] toPerm, int startIdx, int endIdx, T[][] storageArr, ref int count)
@@ -50,18 +54,8 @@ namespace DailyProgrammer
             // https://www.geeksforgeeks.org/c-program-to-print-all-permutations-of-a-given-string-2/            
             if (startIdx == endIdx)
             {
-                T[] tempArr = new T[toPerm.Length];
-                tempArr = toPerm;
-                storageArr[count] = tempArr;
-                System.Console.Write("Current Perm: ");
-                PrintElement(toPerm);
-                System.Console.WriteLine("Count: " + count);
-                foreach (T[] currentArr in storageArr)
-                {
-                    System.Console.Write("(");
-                    PySharp.PrintElement(currentArr);
-                    System.Console.WriteLine(")");
-                }
+                for (int j = 0; j < toPerm.Length; j++)
+                    storageArr[count][j] = toPerm[j];
                 count++;
             }
             else
@@ -71,7 +65,6 @@ namespace DailyProgrammer
                     Swap(toPerm, startIdx, i);
                     Permuations(toPerm, startIdx + 1, endIdx, storageArr, ref count);
                     Swap(toPerm, startIdx, i);
-
                 }
             }
         }
@@ -80,23 +73,21 @@ namespace DailyProgrammer
     {
         static void Main(string[] args)
         {
-            int[] testArr = new int[] { 5, 4, 7 };
-            int start = 0;
-            int end = 2;
-            int lenOfPerm = testArr.Length - start;
-            int[][] permPool = PySharp.MakeJaggedForPerms(testArr.Length, lenOfPerm, true);
+            int X=5, Y=7, Z=3, x=1, y=3, z=1;
+            /*
+            int[] testArr = new int[] { 5, 4, 7, 12, 15, 4 };            
+            int[][] permPool = PySharp.MakeJaggedForPerms(testArr.Length, testArr.Length, true);
             int insertArr = 0;
 
-
-            PySharp.Permuations(testArr, start, lenOfPerm - 1, permPool, ref insertArr);
+            PySharp.Permuations(testArr, 0, testArr.Length - 1, permPool, ref insertArr);
 
             foreach (int[] currentArr in permPool)
             {
-                System.Console.Write("(");
+                System.Console.Write("( ");
                 PySharp.PrintElement(currentArr);
-                System.Console.WriteLine(")\n");
+                System.Console.WriteLine(")");
             }
-
+            */
             int Fit(int bigX, int bigY, int smallX, int smallY)
             {
                 int totalX = bigX / smallX;
@@ -110,19 +101,23 @@ namespace DailyProgrammer
                 int totalY = bigY / smallX;
                 return fit1 >= (totalX * totalY) ? fit1 : (totalX * totalY);
             }
-            int Fit3(int bigX, int bigY, int bigZ,
-                int smallX, int smallY, int smallZ)
+            int Fit3(int bigX, int bigY, int bigZ, int smallX, int smallY, int smallZ) // we're gonna permutate this b****
             {
-                int attempt = 1;
-                int[] bigDimensions = new int[3] { bigX, bigY, bigZ };
-                int[] smallDimensions = new int[3] { smallX, smallY, smallZ };
+                int[] smallBoxes = new int[] { smallX, smallY, smallZ };
+                int[][] boxPool = PySharp.MakeJaggedForPerms(3, 3);
+                int permCount = 0, total=0, tempTotal;
+                PySharp.Permuations(smallBoxes, 0, 2, boxPool, ref permCount);
+                for (int i = 0; i < boxPool.Length; i++)
+                {
+
+                }
 
                 return 0;
             }
 
-            // System.Console.WriteLine(Fit(X, Y, x, y));
-
-            // System.Console.WriteLine(Fit2(X, Y, x, y));
+            System.Console.WriteLine("Fit 1: " + Fit(X, Y, x, y));
+            System.Console.WriteLine("Fit 2: " + Fit2(X, Y, x, y));
+            System.Console.WriteLine("Fit 3: " + Fit3(X, Y, Z, x, y, z));
             System.Console.ReadKey();
         }
     }
