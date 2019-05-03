@@ -26,7 +26,7 @@ namespace DailyProgrammer
                 System.Console.Write("null ");
             else
                 foreach (T elem in arr)
-                    Console.Write(elem + " ");            
+                    Console.Write(elem + " ");
         }
         // function mainly meant for permutations code
         public static void Swap<T>(T[] intArr, int pos1, int pos2)
@@ -36,27 +36,32 @@ namespace DailyProgrammer
             intArr[pos2] = temp;
         }
         // function for creating creating empyty jagged array to hold perms
-        public static int[][] MakeJaggedForPerms(int arrLength, int permLength, bool bPrintRowNum=false)
+        public static int[][] MakeJaggedForPerms(int arrLength, int permLength, bool bPrintRowNum = false)
         {
             int rows = Factorial(arrLength) / ((permLength != arrLength) ? Factorial(arrLength - permLength) : 1);
-            
+
             if (bPrintRowNum)
                 System.Console.WriteLine("# of permutations: " + rows);
             return new int[rows][];
         }
         // second attempt at permutations. A more simple one, not the one from Python.
-        static public void Permuations<T>(T[] toPerm, int startIdx, int endIdx, ref T[][]storageArr, ref int count)
+        static public void Permuations<T>(T[] toPerm, int startIdx, int endIdx, T[][] storageArr, ref int count)
         {
             // https://www.geeksforgeeks.org/c-program-to-print-all-permutations-of-a-given-string-2/            
             if (startIdx == endIdx)
             {
-                for (int j = 0; j < toPerm.Length; j++)
-                {
-                    storageArr[count][j] = toPerm[j];
-                }
+                T[] tempArr = new T[toPerm.Length];
+                tempArr = toPerm;
+                storageArr[count] = tempArr;
                 System.Console.Write("Current Perm: ");
                 PrintElement(toPerm);
-                System.Console.WriteLine("Count: " + count + "\n");
+                System.Console.WriteLine("Count: " + count);
+                foreach (T[] currentArr in storageArr)
+                {
+                    System.Console.Write("(");
+                    PySharp.PrintElement(currentArr);
+                    System.Console.WriteLine(")");
+                }
                 count++;
             }
             else
@@ -64,12 +69,12 @@ namespace DailyProgrammer
                 for (int i = startIdx; i <= endIdx; i++)
                 {
                     Swap(toPerm, startIdx, i);
-                    Permuations(toPerm, startIdx + 1, endIdx, ref storageArr, ref count);
+                    Permuations(toPerm, startIdx + 1, endIdx, storageArr, ref count);
                     Swap(toPerm, startIdx, i);
-                    
+
                 }
             }
-        }        
+        }
     }
     class Program
     {
@@ -82,8 +87,8 @@ namespace DailyProgrammer
             int[][] permPool = PySharp.MakeJaggedForPerms(testArr.Length, lenOfPerm, true);
             int insertArr = 0;
 
-            
-            PySharp.Permuations<int>(testArr, start, lenOfPerm - 1, ref permPool, ref insertArr);
+
+            PySharp.Permuations(testArr, start, lenOfPerm - 1, permPool, ref insertArr);
 
             foreach (int[] currentArr in permPool)
             {
@@ -114,7 +119,7 @@ namespace DailyProgrammer
 
                 return 0;
             }
-            
+
             // System.Console.WriteLine(Fit(X, Y, x, y));
 
             // System.Console.WriteLine(Fit2(X, Y, x, y));
