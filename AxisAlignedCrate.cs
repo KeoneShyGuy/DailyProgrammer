@@ -73,21 +73,8 @@ namespace DailyProgrammer
     {
         static void Main(string[] args)
         {
-            int X=5, Y=7, Z=3, x=1, y=3, z=1;
-            /*
-            int[] testArr = new int[] { 5, 4, 7, 12, 15, 4 };            
-            int[][] permPool = PySharp.MakeJaggedForPerms(testArr.Length, testArr.Length, true);
-            int insertArr = 0;
-
-            PySharp.Permuations(testArr, 0, testArr.Length - 1, permPool, ref insertArr);
-
-            foreach (int[] currentArr in permPool)
-            {
-                System.Console.Write("( ");
-                PySharp.PrintElement(currentArr);
-                System.Console.WriteLine(")");
-            }
-            */
+            int X = 12, Y = 34, Z = 56, x = 7, y = 8, z = 9;
+ 
             int Fit(int bigX, int bigY, int smallX, int smallY)
             {
                 int totalX = bigX / smallX;
@@ -105,19 +92,47 @@ namespace DailyProgrammer
             {
                 int[] smallBoxes = new int[] { smallX, smallY, smallZ };
                 int[][] boxPool = PySharp.MakeJaggedForPerms(3, 3);
-                int permCount = 0, total=0, tempTotal;
+                int permCount = 0, total = 0, tempTotal;
                 PySharp.Permuations(smallBoxes, 0, 2, boxPool, ref permCount);
                 for (int i = 0; i < boxPool.Length; i++)
                 {
-
+                    int totalX = bigX / boxPool[i][0];
+                    int totalY = bigY / boxPool[i][1];
+                    int totalZ = bigZ / boxPool[i][2];
+                    tempTotal = totalX * totalY * totalZ;
+                    total = total > tempTotal ? total : tempTotal;
                 }
 
-                return 0;
+                return total;
+            }
+            int FitN(int[] largeBox, int[] smallBox)
+            {
+                int permCount = 0, total = 0, tempTotal;
+                if (largeBox.Length != smallBox.Length)
+                {
+                    System.Console.WriteLine("Error: Arrays are not the same same");
+                    return total;
+                }
+                
+                int[][] boxPool = PySharp.MakeJaggedForPerms(smallBox.Length, smallBox.Length);
+                PySharp.Permuations(smallBox, 0, smallBox.Length - 1, boxPool, ref permCount);
+                int i = 0;
+                while (i < boxPool.Length)
+                {
+                    tempTotal = 1;
+                    for (int j = 0; j < largeBox.Length; j++)
+                        tempTotal *= largeBox[j] / boxPool[i][j];
+                    total = total > tempTotal ? total : tempTotal;
+                    i++;
+                }
+                return total;
             }
 
             System.Console.WriteLine("Fit 1: " + Fit(X, Y, x, y));
             System.Console.WriteLine("Fit 2: " + Fit2(X, Y, x, y));
             System.Console.WriteLine("Fit 3: " + Fit3(X, Y, Z, x, y, z));
+            System.Console.WriteLine("Fit N: " + FitN(new int[] { 123, 456, 789, 1011, 1213, 1415 }, 
+                new int[] { 16, 17, 18, 19, 20, 21 }));
             System.Console.ReadKey();
         }
     }
